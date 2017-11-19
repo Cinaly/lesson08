@@ -22,6 +22,7 @@ let pool = mysql.createPool({
     database: 'db_demo'
 });
 
+app.use(express.static(__dirname+'/public')); //配置静态目录 public 处理html页面的链接
 
 app.get('/', (req, res) => {
 
@@ -30,9 +31,12 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + "/public/index.html");
 
 });
-app.get('/sign-up', (req, res) => { // get post put delete
+/*
+app.get('/signUp', (req, res) => { // get post put delete
     res.sendFile(__dirname + '/public/sign-up.html');
 });
+*/
+
 
 app.post('/signIn', (req, res) => {
     let username = req.body.username;
