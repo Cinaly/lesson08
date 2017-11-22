@@ -22,7 +22,7 @@ let pool = mysql.createPool({
     database: 'db_demo'
 });
 
-app.use(express.static(__dirname+'/public')); //配置静态目录 public 处理html页面的链接
+app.use(express.static(__dirname+'/public')); //配置静态目录 public 处理html页面的链接跳转
 
 app.get('/', (req, res) => {
 
@@ -31,13 +31,15 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + "/public/index.html");
 
 });
+
+
 /*
 app.get('/signUp', (req, res) => { // get post put delete
     res.sendFile(__dirname + '/public/sign-up.html');
 });
 */
 
-
+/*
 app.post('/signIn', (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
@@ -53,6 +55,29 @@ app.post('/signIn', (req, res) => {
                 res.sendFile(__dirname + '/public/home.html');
             } else {
                 res.sendfile(__dirname + '/public/index.html');
+            }
+            conn.release();
+        });
+    });
+});
+*/
+
+//把登录请求改成ajax方式
+app.post('/signIn', (req, res) => {
+    let username = req.body.username;
+    let password = req.body.password;
+    // res.send(username+":"+password);
+    console.log("======" + __dirname);
+    pool.getConnection((err, conn) => {
+        if (err) throw err;
+
+        conn.query("select * from db_demo.users where username=? and password=?", [username, password], (err, result, fields) => {
+            if (err) throw err;
+            console.log(result);
+            if (result.length > 0) {
+                res.send(true);
+            } else {
+                res.send(false);
             }
             conn.release();
         });

@@ -15,4 +15,24 @@
 <!--以链接方式提交的请求,都是get请求-->
 <a href="sign-up.html">注册</a>
 </body>
+<script src="jquery-3.2.1.js"></script>
+<script>
+    $("[type=submit]").click(function (e) {
+        e.preventDefault();
+        $.ajax("/signIn",{
+            type:"post",
+            data:{username:$("[name=username]").val(),password:$("[name=password]").val()}
+        }).then((data)=>{
+            console.log(data);
+            if(data==true){
+                location.href="home.html";
+            }else{
+                alert("用户名或密码错误,请重新登录");
+                
+            }
+        });
+    });
+
+
+</script>
 </html>
